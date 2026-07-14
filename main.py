@@ -1,15 +1,10 @@
-from deck import Deck
+from game import Game
 
-deck = Deck()
 
-print(len(deck.cards))
+def main() -> None:
+    game = Game()
+    game.play_game()
 
-deck.shuffle()
 
-for card in deck.cards[:5]:
-    print(card)
-
-card = deck.deal_card()
-
-print(card)
-print(len(deck.cards))
+if __name__ == "__main__":
+    main()

@@ -2,14 +2,17 @@ from deck import Deck
 from dealer import Dealer
 from player import Player
 
+BLACKJACK = 21
+
+
 class Game:
     def __init__(self):
         name = input("Enter your name: ")
         self.player = Player(name)
         self.dealer = Dealer()
-        self.deck = None
+        self.deck: Deck | None = None
 
-    def play_game(self):
+    def play_game(self) -> None:
         while True:
             self.initial_deal()
 
@@ -19,9 +22,9 @@ class Game:
                 continue
 
             if not self.player_turn():
-                if not self.play_again():
-                    break
-                continue
+                if self.play_again():
+                    continue
+                break
 
             if self.dealer_turn():
                 self.determine_winner()
@@ -29,7 +32,7 @@ class Game:
             if not self.play_again():
                 break
 
-    def initial_deal(self):
+    def initial_deal(self) -> None:
         self.player.reset_hand()
         self.dealer.reset_hand()
         self.deck = Deck()
@@ -46,17 +49,17 @@ class Game:
         self.player.show_hand()
         self.dealer.show_hand()
 
-    def player_turn(self):
+    def player_turn(self) -> bool:
         print("\n==============================")
         print(f"      {self.player.name.upper()}'S TURN")
         print("==============================")
         while True:
-            action = input("\nDo you want to hit or stand? (h/s): ").lower()
+            action = input("\nDo you want to hit or stand? (h/s): ").strip().lower()
             if action == "h":
                 self.player.receive_card(self.deck.deal_card())
                 self.player.show_hand()
 
-                if self.player.score > 21:
+                if self.player.score > BLACKJACK:
                     print("\nYou bust! Dealer wins.")
                     return False
                 
@@ -65,7 +68,7 @@ class Game:
             else:
                 print("\nInvalid input. Please enter 'h' or 's'.")
 
-    def dealer_turn(self):
+    def dealer_turn(self) -> bool:
         print("\n==============================")
         print("      DEALER'S TURN")
         print("==============================")
@@ -74,27 +77,29 @@ class Game:
 
         self.dealer.show_hand(reveal=True)
 
-        if self.dealer.score > 21:
+        if self.dealer.score > BLACKJACK:
             print("\nDealer bust! You win.")
             return False
         return True
     
-    def determine_winner(self):
+    def determine_winner(self) -> None:
+        player_score = self.player.score
+        dealer_score = self.dealer.score
         print("\n========== FINAL SCORES ==========")
-        print(f"{self.player.name}: {self.player.score}")
-        print(f"Dealer: {self.dealer.score}")
+        print(f"{self.player.name}: {player_score}")
+        print(f"Dealer: {dealer_score}")
 
-        if self.player.score > self.dealer.score:
+        if player_score > dealer_score:
             print("\nYou win!")
 
-        elif self.player.score < self.dealer.score:
+        elif player_score < dealer_score:
             print("\nDealer wins.")
         else:
             print("\nIt's a tie!")
 
-    def check_blackjack(self):
-        player_blackjack = self.player.score == 21
-        dealer_blackjack = self.dealer.score == 21
+    def check_blackjack(self) -> bool:
+        player_blackjack = self.player.score == BLACKJACK
+        dealer_blackjack = self.dealer.score == BLACKJACK
 
         if player_blackjack and dealer_blackjack:
             self.dealer.show_hand(reveal=True)
@@ -116,14 +121,14 @@ class Game:
         
         return False
 
-    def play_again(self):
+    def play_again(self) -> bool:
         while True:
-            answer = input("\nDo you want to play again? (y/n): ").lower()
+            answer = input("\nDo you want to play again? (y/n): ").strip().lower()
             if answer == "y":
                 return True
             
             elif answer == "n":
-                print('\nThanks for playing!')
+                print("\nThanks for playing!")
                 return False
             else:
                 print("\nInvalid input. Please enter 'y' or 'n'.")
