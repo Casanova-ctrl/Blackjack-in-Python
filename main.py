@@ -41,7 +41,7 @@ class BlackjackApp:
         self.print_header("BLACKJACK IN PYTHON")
         print("Welcome to Blackjack in Python!".center(MENU_WIDTH))
         print("Created by Johnathan Casanova".center(MENU_WIDTH))
-        print("\nMenu".center(MENU_WIDTH))
+        self.print_header("\nMenu")
         print()
         print("1. Play Game".center(MENU_WIDTH))
         print("2. Game Rules".center(MENU_WIDTH))
