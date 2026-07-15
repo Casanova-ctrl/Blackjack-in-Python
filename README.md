@@ -18,7 +18,7 @@ The project was designed to strengthen Python programming skills while demonstra
 
 ---
 
-## Technologies Use
+## Technologies Used
 
 - Python 3.11
 - Visual Studio Code (VS Code)
