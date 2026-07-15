@@ -1,5 +1,6 @@
 from card import Card
 
+
 class Player:
     def __init__(self, name: str):
         self.name = name
@@ -14,7 +15,7 @@ class Player:
     def update_score(self) -> None:
         score = sum(card.value for card in self.hand)
         aces = sum(1 for card in self.hand if card.rank == "Ace")
-        
+
         while score > 21 and aces > 0:
             score -= 10
             aces -= 1
